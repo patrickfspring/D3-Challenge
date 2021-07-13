@@ -92,7 +92,7 @@ d3.csv("assets/data/data.csv").then(function(hlthData) {
       .style("border", "0px")
       .style("border-radius", "8px")
       .html(function(d) {
-        return (`${d.abbr}<br>Healthcare: ${d.healthcare}<br>Poverty: ${d.poverty}`);
+        return (`${d.state}<br>Poverty: ${d.poverty}<br>Healthcare: ${d.healthcare}`);
         //return (`${d.abbr}<br>Smokes: ${d.smokes}<br>Age: ${d.age}`);  **Save if switch back to age/smokes
       });
 
