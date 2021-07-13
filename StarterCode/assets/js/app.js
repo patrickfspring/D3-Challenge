@@ -21,35 +21,36 @@ var svg = d3.select("#scatter")
 var chartGroup = svg.append("g")
   .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-console.log('I got here 1 !!!');
+//console.log('Checkpoint #1 !!!');
 // Import Data
 d3.csv("assets/data/data.csv").then(function(hlthData) {
 
     console.log('I got here 2 !!!');
 
-    // Step 1: Parse Data/Cast as numbers
-    // ==============================
+    // Parse Data/Cast as numbers
+
     hlthData.forEach(function(data) {
-      //console.log('b4 parsing');
+      data.poverty = +data.poverty;
+      data.healthcare = +data.healthcare;
+      data.age = +data.age;
+      data.smokes = +data.smokes;
+      //console.log('after parsing');
       //console.log(data.state, data.abbr);
       //console.log(data.poverty);
       //console.log(data.healthcare);
-      data.poverty = +data.poverty;
-      data.age = +data.age;
-      data.healthcare = +data.healthcare;
-      console.log('after parsing');
-      console.log(data.state, data.abbr);
-      console.log(data.poverty);
-      console.log(data.healthcare);
+      //console.log(data.age);
+      //console.log(data.smokes);
     });
 
     // Create scale functions
     var xLinearScale = d3.scaleLinear()
-      .domain([8, d3.max(hlthData, d => d.poverty)])
+      .domain([9, d3.max(hlthData, d => d.poverty)])
+      //.domain([30, d3.max(hlthData, d => d.age)])  **Save if switch back to age/smokes 
       .range([0, width]);
 
     var yLinearScale = d3.scaleLinear()
-      .domain([0, d3.max(hlthData, d => d.healthcare)])
+      .domain([4, d3.max(hlthData, d => d.healthcare)])
+      //.domain([8, d3.max(hlthData, d => d.smokes)])  **Save if switch back to age/smokes
       .range([height, 0]);
 
     // Create the axis functions
@@ -69,16 +70,18 @@ d3.csv("assets/data/data.csv").then(function(hlthData) {
     .data(hlthData)
     .enter()
     .append("circle")
+    //.attr("cx", d => xLinearScale(d.age))  **Save if switch back to age/smokes
+    //.attr("cy", d => yLinearScale(d.smokes))  **Save if switch back to age/smokes
     .attr("cx", d => xLinearScale(d.poverty))
-    .attr("cy", d => yLinearScale(d.healthcare))
-    .attr("r", "15")
+    .attr("cy", d => yLinearScale(d.healthcare))    
+    .attr("r", "14")
     .attr("fill", "green")
     .attr("opacity", ".75");
 
     // Initialize tool tip and prepare styling for its container
     var toolTip = d3.tip()
       .attr("class", "tooltip")
-      //.offset([80, -60])
+      //.offset([80, -60])  ** Not using so the tooltip is right over the individual circle 
       .style("position", "absolute")
       .style("text-align", "center")
       .style("width", "100px")
@@ -90,6 +93,7 @@ d3.csv("assets/data/data.csv").then(function(hlthData) {
       .style("border-radius", "8px")
       .html(function(d) {
         return (`${d.abbr}<br>Healthcare: ${d.healthcare}<br>Poverty: ${d.poverty}`);
+        //return (`${d.abbr}<br>Smokes: ${d.smokes}<br>Age: ${d.age}`);  **Save if switch back to age/smokes
       });
 
     // Create tooltip in the chart
@@ -104,12 +108,6 @@ d3.csv("assets/data/data.csv").then(function(hlthData) {
         toolTip.hide(data);
       });
 
-    //circlesGroup.append("text")
-    //  .attr("text-anchor", "middle")
-    //  .text(function(d) {
-    //    return (d.abbr);
-    //  });  
-
     var circleLabels = chartGroup.selectAll(null)
                                  .data(hlthData).enter()
                                  .append("text");
@@ -117,9 +115,11 @@ d3.csv("assets/data/data.csv").then(function(hlthData) {
     circleLabels
       .attr("x", function(d) {
         return xLinearScale(d.poverty);
+        //return xLinearScale(d.age);  **Save if switch back to age/smokes
        })
       .attr("y", function(d) {
         return yLinearScale(d.healthcare);
+        //return yLinearScale(d.smokes);  **Save if switch back to age/smokes
       }) 
       .text(function(d) {
         return d.abbr;
@@ -129,7 +129,7 @@ d3.csv("assets/data/data.csv").then(function(hlthData) {
       .attr("text-anchor", "middle")
       .attr("fill", "white");  
 
-    console.log('I got here 3 !!!');  
+    //console.log('Checkpoint #2 !!!');  
     // Create axes labels
     chartGroup.append("text")
       .attr("transform", "rotate(-90)")
@@ -141,6 +141,7 @@ d3.csv("assets/data/data.csv").then(function(hlthData) {
       .attr("font-size", "16px")
       .attr("font-weight", 600)
       .text("Lacks Healthcare (%)");
+      //.text("Smokes");  **Save if switch back to age/smokes
 
     chartGroup.append("text")
       .attr("transform", `translate(${width / 2}, ${height + margin.top + 30})`)
@@ -149,6 +150,7 @@ d3.csv("assets/data/data.csv").then(function(hlthData) {
       .attr("font-size", "16px")
       .attr("font-weight", 600)
       .text("In Poverty (%)");
+      //.text("Age");  **Save if switch back to age/smokes
 
   }).catch(function(error) {
     console.log(error);
