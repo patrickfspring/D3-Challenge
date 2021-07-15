@@ -88,7 +88,7 @@ d3.csv("assets/data/data.csv").then(function(censusData) {
       .style("height", "60px")
       .style("padding", "2px")
       .style("font", "12px sans-serif")     
-      .style("background", "lightsteelblue")
+      .style("background", "lightgrey")
       .style("border", "0px")
       .style("border-radius", "8px")
       .html(function(d) {
@@ -133,7 +133,7 @@ d3.csv("assets/data/data.csv").then(function(censusData) {
     // Create axes labels
     chartGroup.append("text")
       .attr("transform", "rotate(-90)")
-      .attr("y", 0 - margin.left - 5)
+      .attr("y", 0 - margin.left - 4)
       .attr("x", 0 - (height / 2))
       .attr("dy", "1em")
       .attr("class", "axisText")
