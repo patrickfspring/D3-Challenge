@@ -109,7 +109,8 @@ d3.csv("assets/data/data.csv").then(function(censusData) {
       });
 
     var circleLabels = chartGroup.selectAll(null)
-                                 .data(censusData).enter()
+                                 .data(censusData)
+                                 .enter()
                                  .append("text");
 
     circleLabels
@@ -125,7 +126,7 @@ d3.csv("assets/data/data.csv").then(function(censusData) {
         return d.abbr;
       })
       .attr("font-family", "sans-serif")
-      .attr("font-size", "10px")
+      .attr("font-size", "9px")
       .attr("text-anchor", "middle")
       .attr("fill", "white");  
     //console.log('Checkpoint #3 !!!');  
