@@ -23,13 +23,13 @@ var chartGroup = svg.append("g")
 
 //console.log('Checkpoint #1 !!!');
 // Import Data
-d3.csv("assets/data/data.csv").then(function(hlthData) {
+d3.csv("assets/data/data.csv").then(function(censusData) {
 
-    console.log('I got here 2 !!!');
+    //console.log('Checkpoint #2 !!!');
 
     // Parse Data/Cast as numbers
 
-    hlthData.forEach(function(data) {
+    censusData.forEach(function(data) {
       data.poverty = +data.poverty;
       data.healthcare = +data.healthcare;
       data.age = +data.age;
@@ -44,13 +44,13 @@ d3.csv("assets/data/data.csv").then(function(hlthData) {
 
     // Create scale functions
     var xLinearScale = d3.scaleLinear()
-      .domain([9, d3.max(hlthData, d => d.poverty)])
-      //.domain([30, d3.max(hlthData, d => d.age)])  **Save if switch back to age/smokes 
+      .domain([9, d3.max(censusData, d => d.poverty)])
+      //.domain([30, d3.max(censusData, d => d.age)])  **Save if switch back to age/smokes 
       .range([0, width]);
 
     var yLinearScale = d3.scaleLinear()
-      .domain([4, d3.max(hlthData, d => d.healthcare)])
-      //.domain([8, d3.max(hlthData, d => d.smokes)])  **Save if switch back to age/smokes
+      .domain([4, d3.max(censusData, d => d.healthcare)])
+      //.domain([8, d3.max(censusData, d => d.smokes)])  **Save if switch back to age/smokes
       .range([height, 0]);
 
     // Create the axis functions
@@ -67,7 +67,7 @@ d3.csv("assets/data/data.csv").then(function(hlthData) {
 
     // Create Circles
     var circlesGroup = chartGroup.selectAll("circle")
-    .data(hlthData)
+    .data(censusData)
     .enter()
     .append("circle")
     //.attr("cx", d => xLinearScale(d.age))  **Save if switch back to age/smokes
@@ -109,7 +109,7 @@ d3.csv("assets/data/data.csv").then(function(hlthData) {
       });
 
     var circleLabels = chartGroup.selectAll(null)
-                                 .data(hlthData).enter()
+                                 .data(censusData).enter()
                                  .append("text");
 
     circleLabels
@@ -128,8 +128,8 @@ d3.csv("assets/data/data.csv").then(function(hlthData) {
       .attr("font-size", "10px")
       .attr("text-anchor", "middle")
       .attr("fill", "white");  
+    //console.log('Checkpoint #3 !!!');  
 
-    //console.log('Checkpoint #2 !!!');  
     // Create axes labels
     chartGroup.append("text")
       .attr("transform", "rotate(-90)")
